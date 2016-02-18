@@ -9,8 +9,8 @@ public class PlayerController : MonoBehaviour {
 	public Transform groundCheck;
 
 	//private instance variables
-	private bool doubleJump;
 	private float move;
+	private bool doubleJump;
 	private bool grounded;
 	private bool facingRight;
 	private Animator _animator;
@@ -77,7 +77,7 @@ public class PlayerController : MonoBehaviour {
 
 	private void PlayerMovement(){
 		_transform.position = new Vector3 (Mathf.Clamp (
-			_transform.position.x, -400, 6042), 
+			_transform.position.x, -400, 6228), 
 			_transform.position.y, 
 			_transform.position.z);
 
