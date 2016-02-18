@@ -77,7 +77,7 @@ public class PlayerController : MonoBehaviour {
 
 	private void PlayerMovement(){
 		_transform.position = new Vector3 (Mathf.Clamp (
-			_transform.position.x, -400, 6228), 
+			_transform.position.x, -400, 7340), 
 			_transform.position.y, 
 			_transform.position.z);
 
