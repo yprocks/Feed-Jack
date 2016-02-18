@@ -18,5 +18,9 @@ public class PlayerCollider : MonoBehaviour {
 			Destroy (other.gameObject);
 		}
 
+		if (other.gameObject.tag == "gem") {
+			Destroy (other.gameObject);
+		}
+
 	}
 }

@@ -14,11 +14,11 @@ public class BananaSpawn : MonoBehaviour {
 	void Start () {
 		_transform = gameObject.GetComponent<Transform> ();
 		Reset ();
-		SpawnCoins ();
+		SpawnBanana ();
 	}
 
 	// Update is called once per frame
-	void SpawnCoins () {
+	void SpawnBanana() {
 
 		float yPos = Random.Range(currentPosition.y-5, currentPosition.y+15);
 		float xPos = Random.Range (currentPosition.x - 15, currentPosition.x + 5);

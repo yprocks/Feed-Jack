@@ -4,8 +4,7 @@ using System.Collections;
 public class GameController : MonoBehaviour {
 
 	//public variables
-	public GameObject pickups;
-	public GameObject banana;
+	public GameObject gem;
 
 	//private variables
 
@@ -13,17 +12,16 @@ public class GameController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-		CoinSpawn ();
+		SpawnAGem ();
 	}
 
-	void CoinSpawn(){
+	void SpawnAGem(){
 
-//		for(int i = 0; i < 10; i ++)
-//			Instantiate (
-//				pickups, 
-//				new Vector3( Random.Range(-120, 5280), Random.Range(-40, 60), 0 ), 
-//				Quaternion.identity
-//				);
+			Instantiate (
+				gem, 
+				new Vector3( Random.Range(-120, 5280), Random.Range(-40, 60), 0 ), 
+				Quaternion.identity
+				);
 	}
 	
 	// Update is called once per frame
