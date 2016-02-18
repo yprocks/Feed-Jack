@@ -19,7 +19,7 @@ public class GameController : MonoBehaviour {
 
 			Instantiate (
 				gem, 
-				new Vector3( Random.Range(-120, 5280), Random.Range(-40, 60), 0 ), 
+				new Vector3( Random.Range(1000, 5280), Random.Range(-40, 60), 0 ), 
 				Quaternion.identity
 				);
 	}

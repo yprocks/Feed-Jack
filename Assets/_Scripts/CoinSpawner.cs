@@ -19,9 +19,11 @@ public class CoinSpawner : MonoBehaviour {
 
 	// Update is called once per frame
 	void SpawnCoins () {
-		
+
+		int jrand = Random.Range (5, 8);
+
 		for(int i = 0; i < 2; i++){
-			for(int j = 0; j < 5; j++){
+			for(int j = 0; j < jrand; j++){
 				Instantiate (coin, currentPosition, Quaternion.identity);
 				currentPosition.x += 25;
 			}
