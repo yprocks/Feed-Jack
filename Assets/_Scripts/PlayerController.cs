@@ -16,12 +16,15 @@ public class PlayerController : MonoBehaviour {
 	private Animator _animator;
 	private Transform _transform;
 	private Rigidbody2D _rigidbody2D;
+	private AudioSource jumpSound;
 
 	// Use this for initialization
 	void Start () {
 		this._transform = gameObject.GetComponent<Transform> ();
 		this._animator = gameObject.GetComponent<Animator> ();
 		this._rigidbody2D = gameObject.GetComponent<Rigidbody2D> ();
+		this.jumpSound = gameObject.GetComponent<AudioSource> ();
+
 		this.doubleJump = true;
 		this.move = 0; 
 		this.facingRight = true;
@@ -55,11 +58,13 @@ public class PlayerController : MonoBehaviour {
 		if (Input.GetKeyDown(KeyCode.Space)) {
 			if (grounded) {
 				_animator.SetInteger ("animState", 2);
+				jumpSound.Play ();
 				_rigidbody2D.velocity = new Vector2 (_rigidbody2D.velocity.x, jump * 10);
 				doubleJump = true;
 			} else {
 				if (doubleJump) {
 					_animator.SetInteger ("animState", 2);
+					jumpSound.Play ();
 					doubleJump = false;
 					_rigidbody2D.AddForce (new Vector2 (_rigidbody2D.velocity.x, jump * 100), ForceMode2D.Impulse);
 				}

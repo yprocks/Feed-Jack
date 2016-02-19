@@ -19,12 +19,22 @@ public class PlayerCollider : MonoBehaviour {
 		} 
 
 		if (other.gameObject.tag == "banana") {
+			gameController.AddHealth ();
 			Destroy (other.gameObject);
 		}
 
 		if (other.gameObject.tag == "gem") {
 			gameController.AddGems ();
 			Destroy (other.gameObject);
+		}
+
+		if (other.gameObject.tag == "deadZone"){
+			gameController.SetGameOver ();
+			//Destroy (this.gameObject);
+		}
+
+		if (other.gameObject.tag == "levelComplete"){
+			gameController.LoadNewLevel ();
 		}
 
 	}
