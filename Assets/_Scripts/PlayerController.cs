@@ -49,21 +49,21 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		if (move != 0) {
-			_animator.SetInteger ("animState", 1);
+			SetAnimation (1);
 			PlayerMovement ();
 		} else {
-			_animator.SetInteger ("animState", 0);
+			SetAnimation (0);
 		}
 
 		if (Input.GetKeyDown(KeyCode.Space)) {
 			if (grounded) {
-				_animator.SetInteger ("animState", 2);
+				SetAnimation (2);
 				jumpSound.Play ();
 				_rigidbody2D.velocity = new Vector2 (_rigidbody2D.velocity.x, jump * 10);
 				doubleJump = true;
 			} else {
 				if (doubleJump) {
-					_animator.SetInteger ("animState", 2);
+					SetAnimation (2);
 					jumpSound.Play ();
 					doubleJump = false;
 					_rigidbody2D.AddForce (new Vector2 (_rigidbody2D.velocity.x, jump * 100), ForceMode2D.Impulse);
@@ -71,6 +71,10 @@ public class PlayerController : MonoBehaviour {
 			}
 		}
 
+	}
+
+	public void SetAnimation(int anim){
+		_animator.SetInteger ("animState", anim);
 	}
 
 	private void Flip(){
@@ -90,4 +94,6 @@ public class PlayerController : MonoBehaviour {
 		_currentPos.x += (move * speed);
 		_transform.position = _currentPos;
 	}
+
+
 }

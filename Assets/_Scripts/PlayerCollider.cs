@@ -30,11 +30,11 @@ public class PlayerCollider : MonoBehaviour {
 
 		if (other.gameObject.tag == "deadZone"){
 			gameController.SetGameOver ();
-			//Destroy (this.gameObject);
+			Destroy (this.gameObject);
 		}
 
 		if (other.gameObject.tag == "levelComplete"){
-			gameController.LoadNewLevel ();
+			gameController.LevelCompleteScreen ();
 		}
 
 	}

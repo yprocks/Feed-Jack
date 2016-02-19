@@ -9,24 +9,25 @@ public class CameraController : MonoBehaviour
 
 	void Start ()
 	{
-		//player = GameObject.FindGameObjectWithTag ("Player");	
 		_transform = gameObject.GetComponent<Transform> ();
 	}
 
 	void LateUpdate ()
 	{
-		if (player.transform.position.y <= 150) {
-			_transform.position = new Vector3 (Mathf.Clamp (
-				player.transform.position.x, 0, 5850), 
-				_transform.position.y, 
-				_transform.position.z
-			);
-		} else {
-			_transform.position = new Vector3 (Mathf.Clamp (
-				player.transform.position.x, 0, 5850), 
-				Mathf.Clamp(player.transform.position.y, 0, player.transform.position.y - 150), 
-				transform.position.z
- 			);
+		if(player != null){
+			if (player.transform.position.y <= 150) {
+				_transform.position = new Vector3 (Mathf.Clamp (
+					player.transform.position.x, 0, 5850), 
+					_transform.position.y, 
+					_transform.position.z
+				);
+			} else {
+				_transform.position = new Vector3 (Mathf.Clamp (
+					player.transform.position.x, 0, 5850), 
+					Mathf.Clamp(player.transform.position.y, 0, player.transform.position.y - 150), 
+					transform.position.z
+	 			);
+			}
 		}
 	}
 }

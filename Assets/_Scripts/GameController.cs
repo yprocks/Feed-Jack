@@ -13,8 +13,16 @@ public class GameController : MonoBehaviour {
 	public Text coinText;
 	public Text gameOverText;
 	public Text levelCompleteText;
+	public Text finalScore;
 
 	public Slider healthHUD;
+
+	public Button resetButton;
+	public Button mainMenu;
+	public Button loadLevelButton;
+
+
+	public PlayerController playerController;
 
 	//private variables
 	private AudioSource[] sounds;
@@ -57,6 +65,11 @@ public class GameController : MonoBehaviour {
 
 		gameOverText.text = "";
 		levelCompleteText.text = "";
+		finalScore.text = "";
+
+		resetButton.gameObject.SetActive (false);
+		mainMenu.gameObject.SetActive (false);
+		loadLevelButton.gameObject.SetActive (false);
 
 		isGameOver = false;
 
@@ -76,17 +89,15 @@ public class GameController : MonoBehaviour {
 	}
 
 	IEnumerator PlayerHealth(){
-		yield return new WaitForSeconds (2F);
+		yield return new WaitForSeconds (5F);
 
 		while(true){
-				yield return new WaitForSeconds (5F);
+				yield return new WaitForSeconds (3F);
 				bananas --;
 				if (bananas < 10) {
 					tickSound.Play ();
 					RemoveHealth ();
 				}
-				
-
 		}
 	}
 	
@@ -95,6 +106,8 @@ public class GameController : MonoBehaviour {
 
 		if (healthHUD.value == 0) {
 			SetGameOver ();
+			playerController.SetAnimation (3);
+			playerController.enabled = false;
 		}
 
 		CheckGameOver ();
@@ -129,12 +142,27 @@ public class GameController : MonoBehaviour {
 		isGameOver = true;
 	}
 
-	public void LoadNewLevel(){
+	public void LevelCompleteScreen(){
+		ClearUISystem ();
+		gameMusic.Stop ();
 		levelComplete.Play ();
-		levelCompleteText.text = "Level " + GetLevel () + 1 + " Complete";
-		//SceneManager.LoadScene (level);
+		levelCompleteText.text = "Level " + GetLevel() + " Complete";
+		resetButton.gameObject.SetActive (true);
+		loadLevelButton.gameObject.SetActive (true);
+		mainMenu.gameObject.SetActive (true);
 	}
 
+	public void MainMenu(){
+		SceneManager.LoadScene ("Main");
+	}
+
+	public void Reset(){
+		SceneManager.LoadScene (GetLevel());
+	}
+
+	public void LoadNewLevel(){
+		SceneManager.LoadScene (GetLevel() + 1);
+	}
 
 	//private methods
 	private int GetCoins(){
@@ -158,15 +186,30 @@ public class GameController : MonoBehaviour {
 		return isGameOver;
 	}
 
-	public int GetLevel(){
+	private int GetLevel(){
 		return SceneManager.GetActiveScene().buildIndex;
 	}
 
 	private void CheckGameOver(){
 
 		if(GetGameOver ()){
+
+			ClearUISystem ();
+
 			gameOverText.text = "Game Over";
-			
+			finalScore.text = "Score : " + GetScore();
+
+			mainMenu.gameObject.SetActive (true);
+			resetButton.gameObject.SetActive (true);
+		}
+
+	}
+
+	private void ClearUISystem(){
+		GameObject[] clearUI = GameObject.FindGameObjectsWithTag ("ProgressUI");
+
+		foreach(GameObject UI in clearUI){
+			UI.SetActive (false);
 		}
 
 	}
