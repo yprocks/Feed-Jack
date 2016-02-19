@@ -5,9 +5,12 @@ using System.Collections;
 
 public class GameController : MonoBehaviour {
 
-	//public variables
+	// public variables
+
+	// reference to gem to spawn one in game
 	public GameObject gem;
 
+	// UI References
 	public Text scoreText;
 	public Text gemText;
 	public Text coinText;
@@ -21,12 +24,15 @@ public class GameController : MonoBehaviour {
 	public Button mainMenu;
 	public Button loadLevelButton;
 
+	// references to player and camera script to disable after game over
+	public PlayerController playerController; 
+	public CameraController cameraController;
 
-	public PlayerController playerController;
 
-	//private variables
+	// private variables
+
+	// references to audio sources
 	private AudioSource[] sounds;
-
 	private AudioSource gameMusic;
 	private AudioSource tickSound;
 	private AudioSource coinPickup;
@@ -34,15 +40,18 @@ public class GameController : MonoBehaviour {
 	private AudioSource gemPickup;
 	private AudioSource levelComplete;
 	private AudioSource playerDeath;
+	private AudioSource UIMusic;
 
+	// integers to manipulate of game items
 	private int bananas;
 	private int coins;
 	private int gems;
 	private int score;
 
+	// variable to check game status
 	private bool isGameOver;
 
-	// Use this for initialization
+	// Initialization
 	void Start () {
 
 		sounds = gameObject.GetComponents<AudioSource> ();
@@ -54,6 +63,7 @@ public class GameController : MonoBehaviour {
 		gemPickup 	  = sounds [4];
 		levelComplete = sounds [5];
 		playerDeath   = sounds [6];
+		UIMusic 	  = sounds [7];
 
 		bananas = 10;
 		coins = 0;
@@ -78,6 +88,7 @@ public class GameController : MonoBehaviour {
 
 	}
 
+	// Spawn one gem in the game
 	void SpawnAGem(){
 
 			Instantiate (
@@ -88,30 +99,37 @@ public class GameController : MonoBehaviour {
 
 	}
 
+	// Coroutine or say Thread to constantly check player health
 	IEnumerator PlayerHealth(){
 		yield return new WaitForSeconds (5F);
 
 		while(true){
 				yield return new WaitForSeconds (3F);
-				bananas --;
-				if (bananas < 10) {
-					tickSound.Play ();
-					RemoveHealth ();
+				if (!isGameOver) {
+					bananas--;
+					if (bananas < 10) {
+						tickSound.Play ();
+						RemoveHealth ();
+					}
 				}
 		}
 	}
 	
-	// Update is called once per frame
+	// Called once per frame
 	void Update () {
 
 		if (healthHUD.value == 0) {
 			SetGameOver ();
 			playerController.SetAnimation (3);
 			playerController.enabled = false;
+			playerDeath.Play ();
 		}
 
 		CheckGameOver ();
 	}
+
+
+	// public Methods
 
 	public void AddCoins (){
 		coinPickup.Play ();
@@ -138,7 +156,9 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void SetGameOver(){
-		playerDeath.Play ();
+		if (!playerDeath.isPlaying) {
+			playerDeath.Play ();
+		}
 		isGameOver = true;
 	}
 
@@ -146,6 +166,7 @@ public class GameController : MonoBehaviour {
 		ClearUISystem ();
 		gameMusic.Stop ();
 		levelComplete.Play ();
+		UIMusic.PlayDelayed (3F);
 		levelCompleteText.text = "Level " + GetLevel() + " Complete";
 		resetButton.gameObject.SetActive (true);
 		loadLevelButton.gameObject.SetActive (true);
@@ -164,7 +185,9 @@ public class GameController : MonoBehaviour {
 		SceneManager.LoadScene (GetLevel() + 1);
 	}
 
-	//private methods
+
+	// private methods
+
 	private int GetCoins(){
 		return coins;
 	}
@@ -195,6 +218,11 @@ public class GameController : MonoBehaviour {
 		if(GetGameOver ()){
 
 			ClearUISystem ();
+			gameMusic.Stop ();
+			cameraController.enabled = false;
+
+			if(!UIMusic.isPlaying)
+				UIMusic.PlayDelayed (1F);
 
 			gameOverText.text = "Game Over";
 			finalScore.text = "Score : " + GetScore();
