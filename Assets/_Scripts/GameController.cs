@@ -104,7 +104,7 @@ public class GameController : MonoBehaviour {
 		yield return new WaitForSeconds (5F);
 
 		while(true){
-				yield return new WaitForSeconds (3F);
+				yield return new WaitForSeconds (3.5F);
 				if (!isGameOver) {
 					bananas--;
 					if (bananas < 10) {

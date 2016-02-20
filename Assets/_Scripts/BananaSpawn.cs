@@ -23,7 +23,7 @@ public class BananaSpawn : MonoBehaviour {
 		float yPos = Random.Range(currentPosition.y-5, currentPosition.y+15);
 		float xPos = Random.Range (currentPosition.x - 15, currentPosition.x + 5);
 
-		for(int i = 0; i < Random.Range(0,3); i++){
+		for(int i = 0; i < Random.Range(1,3); i++){
 			Instantiate (
 				banana, new Vector2(xPos, yPos), Quaternion.identity
 			);
