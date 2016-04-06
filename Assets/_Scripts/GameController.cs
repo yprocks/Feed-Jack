@@ -17,17 +17,16 @@ public class GameController : MonoBehaviour {
 	public Text gameOverText;
 	public Text levelCompleteText;
 	public Text finalScore;
-
 	public Slider healthHUD;
 
 	public Button resetButton;
+	public Button exit;
 	public Button mainMenu;
 	public Button loadLevelButton;
 
 	// references to player and camera script to disable after game over
 	public PlayerController playerController; 
 	public CameraController cameraController;
-
 
 	// private variables
 
@@ -80,6 +79,7 @@ public class GameController : MonoBehaviour {
 		resetButton.gameObject.SetActive (false);
 		mainMenu.gameObject.SetActive (false);
 		loadLevelButton.gameObject.SetActive (false);
+		exit.gameObject.SetActive (false);
 
 		isGameOver = false;
 
@@ -120,9 +120,7 @@ public class GameController : MonoBehaviour {
 
 		if (healthHUD.value == 0) {
 			SetGameOver ();
-			playerController.SetAnimation (3);
-			playerController.enabled = false;
-			playerDeath.Play ();
+			PlayDeathSound();		
 		}
 
 		CheckGameOver ();
@@ -156,9 +154,7 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void SetGameOver(){
-		if (!playerDeath.isPlaying) {
-			playerDeath.Play ();
-		}
+		PlayDeathSound();		
 		isGameOver = true;
 	}
 
@@ -166,15 +162,18 @@ public class GameController : MonoBehaviour {
 		ClearUISystem ();
 		gameMusic.Stop ();
 		levelComplete.Play ();
-		UIMusic.PlayDelayed (3F);
+		UIMusic.PlayDelayed (6F);
 		levelCompleteText.text = "Level " + GetLevel() + " Complete";
-		resetButton.gameObject.SetActive (true);
-		loadLevelButton.gameObject.SetActive (true);
+//		resetButton.gameObject.SetActive (true);
+//		loadLevelButton.gameObject.SetActive (true);
+		exit.gameObject.SetActive (true);
 		mainMenu.gameObject.SetActive (true);
+		gameOverText.text = "";
+		finalScore.text = "";
 	}
 
 	public void MainMenu(){
-		SceneManager.LoadScene ("Main");
+		SceneManager.LoadScene ("Menu");
 	}
 
 	public void Reset(){
@@ -184,7 +183,9 @@ public class GameController : MonoBehaviour {
 	public void LoadNewLevel(){
 		SceneManager.LoadScene (GetLevel() + 1);
 	}
-
+	public void Exit(){
+		Application.Quit ();
+	}
 
 	// private methods
 
@@ -205,7 +206,7 @@ public class GameController : MonoBehaviour {
 		healthHUD.value --;
 	}
 
-	private bool GetGameOver(){
+	private bool GetGameStatus(){
 		return isGameOver;
 	}
 
@@ -213,22 +214,31 @@ public class GameController : MonoBehaviour {
 		return SceneManager.GetActiveScene().buildIndex;
 	}
 
+	private void PlayDeathSound(){
+		playerDeath.Play ();
+	}
+
 	private void CheckGameOver(){
 
-		if(GetGameOver ()){
+		if(GetGameStatus ()){
+
+			playerController.SetAnimation (3);
 
 			ClearUISystem ();
 			gameMusic.Stop ();
 			cameraController.enabled = false;
 
 			if(!UIMusic.isPlaying)
-				UIMusic.PlayDelayed (1F);
+				UIMusic.PlayDelayed (3F);
 
 			gameOverText.text = "Game Over";
 			finalScore.text = "Score : " + GetScore();
 
 			mainMenu.gameObject.SetActive (true);
 			resetButton.gameObject.SetActive (true);
+			exit.gameObject.SetActive (true);
+			playerController.enabled = false;
+//			enemyController.enabled = false;
 		}
 
 	}
